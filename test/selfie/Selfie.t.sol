@@ -143,3 +143,6 @@ contract SelfieAttacker is IERC3156FlashBorrower {
 // forge test --mt "test_selfie"
 // forge test --mt "test_freeRider" 
 // forge test --mt "test_naiveReceiver"
+// forge test --mt "test_unstoppable"
+// forge test --mt "test_sideEntrance"
+// forge test --mt "test_theRewarder" 
